@@ -2,7 +2,7 @@ name: Hourly Branch Protection Check
 
 on:
   schedule:
-    - cron: "0 * * * *" # automatically every hour
+    - cron: "0 3 * * 0" # Run at 3:00 AM every Sunday
 
   # Allow manual runs from the Actions tab
   workflow_dispatch:
