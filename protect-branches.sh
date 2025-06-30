@@ -33,7 +33,7 @@ for repo in $repos; do
       gh api -X PUT "repos/$repo/branches/$branch/protection" --input - <<EOF
 {
   "required_status_checks": null,
-  "enforce_admins": true,
+  "enforce_admins": false,
   "required_pull_request_reviews": {
     "required_approving_review_count": 1
   },
