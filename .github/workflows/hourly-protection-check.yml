@@ -1,0 +1,29 @@
+name: Hourly Branch Protection Check
+
+on:
+  schedule:
+    - cron: "0 * * * *" # automatically every hour
+
+  # Allow manual runs from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  protect-branches:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t repo-guard .
+
+      - name: Run protection script inside Docker container
+        run: |
+          docker run --rm \
+            -e GITHUB_TOKEN=${{ secrets.REPO_GUARDIAN_PAT }} \
+            repo-guard
+        env:
+          # The script inside the container needs a token to interact with the GitHub API.
+          # We pass a Personal Access Token (PAT) stored as a secret.
+          # A PAT is recommended over the default GITHUB_TOKEN for cross-repository permissions.
+          REPO_GUARDIAN_PAT: ${{ secrets.REPO_GUARDIAN_PAT }}
